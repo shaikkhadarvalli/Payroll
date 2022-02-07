@@ -1,0 +1,115 @@
+package khada;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class SelectData {
+   static final String DB_URL = "jdbc:mysql://localhost:3306/S";
+   static final String USER = "root";
+   static final String PASS = "6304226160";
+   System.out.println("ENTER ID");
+   static Scanner scan=new Scanner(System.in);
+public static int a=scan.nextInt();
+ 
+   static final String QUERY = ("SELECT * FROM Registration where id= "+a+" ;");
+
+  public static void Rams() {
+      // Open a connection
+      try{
+    	  Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+         Statement stmt = conn.createStatement();
+    		
+         ResultSet rs = stmt.executeQuery(QUERY);
+      {		 
+    	  //System.out.println("ENTER THE NAME OF EMPLOYEE");
+    	  
+         while(rs.next()){
+            //Display values
+            System.out.print("ID: " + rs.getInt("id"));
+            System.out.print(", Age: " + rs.getInt("age"));
+            System.out.print(", First: " + rs.getString("first"));
+           System.out.println(", Last: " + rs.getString("last"));
+         }
+      } }catch (SQLException e) {
+         e.printStackTrace();
+      } 
+   
+}}
+************************************************************************************************************
+package khada;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class Like {
+   static final String DB_URL = "jdbc:mysql://localhost:3306/S";
+   static final String USER = "root";
+   static final String PASS = "6304226160";
+   static final String QUERY = "SELECT id, first, last, age FROM Registration";
+
+   public static void Laks() {
+      // Open a connection
+      try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+         Statement stmt = conn.createStatement();) {		      
+         System.out.println("Fetching records without condition...");
+         ResultSet rs = stmt.executeQuery(QUERY);
+            System.out.println("Fetching records with condition...");
+         System.out.println("Enter name");
+         Scanner scan=new Scanner(System.in);
+         String a=scan.next();
+         String sql = "SELECT id, first, last, age FROM Registration" +
+            " WHERE first LIKE '"+a+"%'";
+         rs = stmt.executeQuery(sql);
+
+         while(rs.next()){
+            //Display values
+            System.out.print("ID: " + rs.getInt("id"));
+            System.out.print(", Age: " + rs.getInt("age"));
+            System.out.print(", First: " + rs.getString("first"));
+            System.out.println(", Last: " + rs.getString("last"));
+         }
+         rs.close();
+      } catch (SQLException e) {
+         e.printStackTrace();
+      } 
+   }
+}
+**********************************************************************************************************************
+package khada;
+
+import java.util.Scanner;
+
+public class Searching{
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+			Scanner scan=new Scanner(System.in);
+			
+			System.out.println("ENTER NUMBER");
+			int a=scan.nextInt();
+			if(a==1) {
+				SelectData s=new SelectData();
+				s.Rams();
+				
+			}
+			else if(a==2)
+			{
+				Like l=new Like();
+				l.Laks();
+			}
+			else {
+				System.out.println("CHOOSE CORRECT ONE");
+			}
+
+	}
+
+}
+
