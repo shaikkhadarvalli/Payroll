@@ -1,0 +1,702 @@
+package FSS_PMS;
+
+import java.io.BufferedReader;
+
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+import java.util.InputMismatchException;
+
+
+public class AddEmpl extends CreateTables {
+public static void Add() throws InterruptedException, IOException,InputMismatchException {
+	 
+	
+	
+	Connection con=null;
+	PreparedStatement ps=null;
+	String qry="insert into S."+AddEmpl.ConTableName()+"  values(?,?,?,?,?,?,?,?,?,?) ";
+	 InputStreamReader r=new InputStreamReader(System.in);    
+	    BufferedReader br=new BufferedReader(r);
+	
+ 
+	String url="jdbc:mysql://localhost:3306/S";
+	String uname="root";
+	String password="6304226160";
+	try {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		con=(Connection) DriverManager.getConnection(url, uname, password);
+		con.setAutoCommit(false);
+		ps=(PreparedStatement) con.prepareStatement(qry);
+		System.out.println("HOW MANY MEMBERS TO ADD");
+		InputStreamReader c=new InputStreamReader(System.in);    
+	    BufferedReader bt=new BufferedReader(r);
+	 Scanner scan=new Scanner(System.in);
+	 int v=scan.nextInt();
+	 if(v>0) {
+		for(int i=1;i<=v;i++) {
+			System.out.println("ENTER "+i+" EMPLOYEE ID.");
+			String Id=br.readLine();
+			System.out.println("ENTER "+i+"  EMPLOYEE FIRST NAME.");
+			String First=br.readLine();
+			
+			System.out.println("ENTER "+i+"  EMPLOYEE LAST NAME. ");
+			String Last=br.readLine();
+			
+			System.out.println("ENTER  "+i+" EMPLOYEE GENDER. ");
+			String Gender=br.readLine();
+			
+			System.out.println("ENTER  "+i+" EMPLOYEE AGE. ");
+			String Age=br.readLine();
+			 
+			
+			System.out.println("ENTER  "+i+" EMPLOYEE SALARY(DON'T WORRY "+First+" "+Last+"...! WE'LL MADE IT AS CONFIDENTIAL.)");
+			
+			String Salary=br.readLine();
+			
+			System.out.println("ENTER "+i+"  EMPLOYEE DESIGNATION.");
+			String Designation=br.readLine();
+		 
+			System.out.println("ENTER "+i+"  EMPLOYEE DEPARTMENT NUMBER.");
+			String Departmentno=br.readLine();
+			
+			System.out.println("ENTER "+i+"  EMPLOYEE CONTACT NUMBER.");
+			String Contact_number=br.readLine();
+			
+			System.out.println("ENTER "+i+"  EMLOYEE EMAIL ID.");
+			String Email=br.readLine();
+		ps.setString(1, Id);
+		ps.setString(2,First);
+		ps.setString(3,Last);
+		ps.setString(4,Gender);
+		ps.setString(5, Age);
+		ps.setString(6,Salary);
+		ps.setString(7,Designation);
+		ps.setString(8, Departmentno);
+		ps.setString(9, Contact_number);
+		ps.setString(10, Email);
+		  
+		ps.executeUpdate();
+		Thread.sleep(2000);
+		System.out.println("EMPLYEE "+i+" DETAILS ADDED");
+		
+		}
+		System.out.println(" YOU COMPLETED ADDING EMPLOYEE SECTION ");
+		System.out.println("YOU WANT TO SEE ALL THE DETAILS OF EMPLOYEE");
+		con.commit();
+		Thread.sleep(2000);
+		System.out.println("CHOOSE HERE/n1.DETAILS OF TOTAL EMPLOYEE/n2.NO THANKS");
+		int x=scan.nextInt();
+		if(x==1) {
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/s","root","6304226160");
+				
+				 String query = "SELECT * FROM "+AddEmpl.ConTableName()+" ;";
+
+			      // create the java statement
+			      Statement st = con.createStatement();
+			      
+			      // execute the query, and get a java resultset
+			      ResultSet rs = st.executeQuery(query);
+			      
+			      // iterate through the java resultset
+			      System.out.println("ID  FIRST  LAST  GENDER  Age  Salary  Designation  Departmentno  Contact_Number  Email");
+			      while (rs.next())
+			      {
+			        int Id = rs.getInt("Id");
+			        String First = rs.getString("First");
+			        String Last = rs.getString("Last");
+			        String Gender = rs.getString("Gender");
+			        
+			        String Age = rs.getString("Age");
+			        String Salary = rs.getString("Salary");
+			        String Designation = rs.getString("Designation");
+			        String DepartmentNo = rs.getString("DepartmentNo");
+			        String Contact_Number = rs.getString("Contact_Number");
+			        String Email = rs.getString("Email");
+			        
+			        // print the results
+			      //  System.out.format("%s, %s, %s, %s\n", Id, First, Last, Gender);
+			       System.out.println(Id+"  "+First+"  "+Last+"  "+Gender+" "+Age+"  "+Salary+"  "+Designation+"  "+DepartmentNo+"  "+Contact_Number+"  "+Email);
+			       
+			      }
+			      st.close();
+			    System.out.println("IF YOU WANT TO ADD ONE MORE ROW PRESS 0 OR PRESS 1 TO MAIN MENU OR PRESS ANY KEY TO EXIT");
+				 int a=scan.nextInt();
+				 if(a==1) {Thread.sleep(2000);
+					System.out.println("CHOOSE YOUR ACTION \n 1.UPDATE EMPLOYEE \n 2.SEARCH EMPLOYEE \n 3.DELETE EMPLOYEE \n 4.GENERATE PAY SLIP \n 5.RECORD EMLOYEE ATTENDENCE AND WORKING HOURS");
+					int b=scan.nextInt();
+					switch (b) {
+					 
+					case (1):
+						User_Actions.UpdateEmployee();
+					case (2):
+						User_Actions.SearchEmployee();
+					case (3):
+						User_Actions.DeleteEmployee();
+					case (4):
+						User_Actions.GeneratePaySlip();
+					case (5):
+						User_Actions.RecordEmployee();
+					default:
+						System.out.println("INVALID DATA");
+					}
+				}
+				 else if(a==0) {
+					 Add();}
+					else {
+						System.out.println("INVALID DATA");
+					}
+				 
+				
+				//int i=stmt.executeUpdate();
+				//System.out.println(i+"records inserted");
+				con.close();
+				}catch(Exception e) {
+					System.out.println(e);
+				}
+		}
+		else if(x==2) {
+			System.out.println("CHOOSE YOUR ACTION \n1.UPDATE EMPLOYEE\n2.SEARCH EMPLOYEE\n3.DELETE EMPLOYEE\n4.RECORD EMPLOYEE\n5.GENERATE PAY SLIP");
+			int b=scan.nextInt();
+			switch (b) {
+			case (1):
+			 User_Actions.UpdateEmployee();
+			case (2):
+				User_Actions.SearchEmployee();
+			case (3):
+				User_Actions.DeleteEmployee();
+			case (4):
+				User_Actions.RecordEmployee();
+			case (5):
+				User_Actions.GeneratePaySlip();
+			
+			default:
+				System.out.println("INVALID DATA");
+			}
+		}
+		
+		 
+	 }
+	 else
+	 {
+		 System.out.println("INVALID INPUT ");
+	 }
+	} catch (ClassNotFoundException | SQLException e) {
+		
+		e.printStackTrace();
+	}
+	finally {
+		if(ps!=null) {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(con!=null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}br.close();
+	//	System.out.println("all costly resources are closed");
+	}
+}
+
+public static String ConTableName(){
+	// TODO Auto-generated method stub
+	System.out.println("PLESE CONFIRM TABLE NAME ONCE AGAIN");
+	Scanner scan=new Scanner(System.in);
+	String x=scan.nextLine();
+	return x;
+}
+}
+////////////////////////////////////////////////////////////////////////////////
+package FSS_PMS;
+
+import java.io.BufferedReader;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.sql.Connection;
+
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+ 
+
+public class  CreateTables {
+   static final String DB_URL = "jdbc:mysql://localhost:3306/S";
+   static final String USER = "root";
+   static final String PASS = "6304226160";
+ 
+
+   public static void Raja() throws InterruptedException, IOException {
+      // Open a connection
+      try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+         Statement stmt = conn.createStatement();
+    		   
+      ) {  
+    	  Scanner scan=new Scanner(System.in);
+    	  System.out.println("Enter Tabel Name");
+    	  String g=scan.next();
+          String sql = "CREATE TABLE "+g+" (Id varchar(45) PRIMARY KEY,First VARCHAR(255), Last VARCHAR(255),Gender Varchar(45),Age varchar(45),Salary varchar(45),Designation varchar(45),Departmentno varchar(45),Contact_Number varchar(45),Email varchar(45));";
+        
+         stmt.executeUpdate(sql);
+       Thread.sleep(1500);
+         System.out.println("CREATED "+g+" TABLE IN DATABASE.");  
+         System.out.println("YOU WANT TO ADD EMPLOYEE TO TABEL\n ENTERING INTO DB");
+         Thread.sleep(2000);
+         AddEmpl t=new AddEmpl();
+         t.Add();
+         
+      } catch (SQLException e) {
+         e.printStackTrace();
+      } 
+   }
+  }
+/////////////////////////////////////////////////////////////////////////////////
+package FSS_PMS;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.util.Scanner;
+
+public class DeleteEmp {
+	public static void Joye() {
+		System.out.println("YOU ARE ENTERED INTO DELETION EMPLOYEE SECTOR");
+		try {
+			Scanner scan=new Scanner(System.in);
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/kitchenonline","root","6304226160");
+			
+			PreparedStatement stmt=con.prepareStatement("SELECT * FROM "+AddEmpl.ConTableName()+" ;");
+			stmt.executeUpdate();
+			 System.out.println("WHICH RECORD YOU NEED TO DELETE.,PLEASE MENTION CORRECT EMPID.");
+			 int s=scan.nextInt();
+			 PreparedStatement ps=con.prepareStatement("DELETE FROM "+AddEmpl.ConTableName()+" WHERE Id = "+s+" ;");
+			 ps.executeUpdate();
+			 System.out.println("AFTER DELETION OPERATION YOU NEED TO SEE THE UPDATED RESULTS,\n THEN PRESS1 OR \n PRESS 0 TO MAIN MENU\n PRESS 5 TO DELETE ANOTHER EMPLOYEE DATA \n OR PRESS ANY KEY TO LOGOUT");
+			 int h=scan.nextInt();
+			 if(h==1) {
+			System.out.println(stmt.executeUpdate());
+			 }
+			 else if(h==0) {
+				 System.out.println(" CHOOSE YOUR ACTION \n 1.ADD EMPLOYEE \n 2.UPDATE EMPLOYEE \n 3.SEARCH EMPLOYEE \n 4.GENERATE PAY SLIP \n 5.RECORD EMLOYEE ATTENDENCE AND WORKING HOURS");
+					int b=scan.nextInt();
+					switch (b) {
+					case (1):
+					 User_Actions.AddEmployee();
+					case (2):
+						User_Actions.UpdateEmployee();
+					case (3):
+						User_Actions.SearchEmployee();
+					 
+					case (4):
+						User_Actions.GeneratePaySlip();
+					case (5):
+						User_Actions.RecordEmployee();
+					default:
+						System.out.println("INVALID DATA");
+					}
+			 }
+			 else if(h==5) {
+				 System.out.println("PRESS 1 TO CONFIRM OR PRESS ANY KEY TO EXIT");
+				 int q=scan.nextInt();
+				 if(q==1) {
+				 Joye();}
+				 else {
+					System.exit(0);
+				 }
+			 }
+			 else {
+				 System.exit(0);
+			 }
+			con.close();
+			}catch(Exception e) {
+				System.out.println(e);
+			}
+	}
+}
+♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣♣
+package FSS_PMS;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class SearchById {
+   static final String DB_URL = "jdbc:mysql://localhost:3306/S";
+   static final String USER = "root";
+   static final String PASS = "6304226160";
+   static final String QUERY = "SELECT * FROM "+AddEmpl.ConTableName()+";";
+
+   public static void Laks() {
+      // Open a connection
+      try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+         Statement stmt = conn.createStatement();) {		      
+         System.out.println("FETCHING RECORDS FROM YOUR DATABASE....");
+         ResultSet rs = stmt.executeQuery(QUERY);
+            
+         System.out.println("Enter name");
+         Scanner scan=new Scanner(System.in);
+         String a=scan.next();
+         
+         String sql = "SELECT * FROM "+AddEmpl.ConTableName()+" WHERE First LIKE '"+a+"%'";
+         rs = stmt.executeQuery(sql);
+
+         while(rs.next()){
+            //Display values
+            System.out.println("ID: " + rs.getInt("Id"));
+            System.out.println(", First: " + rs.getString("First"));
+            System.out.println(", Last: " + rs.getString("Last"));
+            System.out.println(", Gender: " + rs.getInt("Gender"));
+            System.out.println(", Age: " + rs.getInt("Age"));
+            System.out.println(", Salary: " + rs.getInt("Salary"));
+            System.out.println(", Designation: " + rs.getInt("Designation"));
+            System.out.println(", Departmentno: " + rs.getInt("Departmentno"));
+            System.out.println(", Contact_Number " + rs.getInt("Contact_Number"));
+            System.out.println(", Email " + rs.getInt("Email"));
+             
+         }
+         rs.close();
+      } catch (SQLException e) {
+         e.printStackTrace();
+      } 
+   }
+ 
+ 
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class SearchByName {
+   static final String DB_URL = "jdbc:mysql://localhost:3306/S";
+   static final String USER = "root";
+   static final String PASS = "6304226160";
+   static Scanner scan=new Scanner(System.in);
+    
+public static int a=scan.nextInt();
+ 
+   static final String QUERY = ("SELECT * FROM "+AddEmpl.ConTableName() +" where id= "+a+" ;");
+
+  public static void Rams() {
+      // Open a connection
+      try{
+    	  Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+         Statement stmt = conn.createStatement();
+    		
+         ResultSet rs = stmt.executeQuery(QUERY);
+      {		 
+    	  //System.out.println("ENTER THE NAME OF EMPLOYEE");
+    	  
+         while(rs.next()){
+            //Display values
+        	 System.out.println("ID: " + rs.getInt("Id"));
+             System.out.println(", First: " + rs.getString("First"));
+             System.out.println(", Last: " + rs.getString("Last"));
+             System.out.println(", Gender: " + rs.getInt("Gender"));
+             System.out.println(", Age: " + rs.getInt("Age"));
+             System.out.println(", Salary: " + rs.getInt("Salary"));
+             System.out.println(", Designation: " + rs.getInt("Designation"));
+             System.out.println(", Departmentno: " + rs.getInt("Departmentno"));
+             System.out.println(", Contact_Number " + rs.getInt("Contact_Number"));
+             System.out.println(", Email " + rs.getInt("Email"));
+           
+         }
+                
+	}
+       }catch (SQLException e) {
+         e.printStackTrace();
+      } 
+   
+}
+  public static void print() {
+	  System.out.println("ENTER ID");
+	  Scanner scan=new Scanner(System.in);
+	  int a=scan.nextInt();
+	  }
+  }
+
+package FSS_PMS;
+
+
+ 
+
+
+ 
+
+import java.util.Scanner;
+
+public class Searching{
+
+	public static void Search() {
+		// TODO Auto-generated method stub
+			Scanner scan=new Scanner(System.in);
+			
+			System.out.println("CHOOSE FROM HERE\n1.SEARCH BY NAME.\n2.SEARCH BY ID");
+			int a=scan.nextInt();
+			if(a==1) {
+				SearchByName s=new SearchByName();
+				s.Rams();
+				System.out.println("1");
+				
+			}
+			else if(a==2)
+			{
+				SearchById l=new SearchById();
+				l.Laks();
+				System.out.println("2");
+			}
+			else {
+				System.out.println("CHOOSE CORRECT ONE");
+				Search();
+			}
+			
+	}
+			 
+			
+			
+	
+}
+	
+
+
+package FSS_PMS;
+
+import java.io.IOException;
+import java.util.Scanner;
+
+public class TypesOfUsers {
+	public static void main(String[]args) throws InterruptedException, IOException {
+	 
+		Scanner scan=new Scanner(System.in);
+		System.out.println("WELCOME TO THE PMS SYSTEM");
+		Thread.sleep(2000);
+		System.out.println("PLEASE CHOOSE ONE FROM IT:\n 1.ADMINSTRATOR\n 2.EMPLOYEE \n 3.ACCOUNTANT");
+		int a=scan.nextInt();
+		User_Login u=new User_Login();
+		if(a==1) {
+			Thread.sleep(2000);
+			System.out.println("WELCOME ADMINSTRATOR");
+			Thread.sleep(2000);
+			 u.Admin();
+			 System.out.println("CONFIRM LOGOUT..! PRESS ANY KEY");
+			 int r=scan.nextInt();
+		        if(r==10){
+		        	System.exit(0);
+		        }else {
+		        	System.exit(0);
+		        }
+		}
+		else if(a==2) {
+			
+			System.out.println("WELCOME EMPLOYEE");
+			Thread.sleep(2000);
+			u.Employee();
+			 System.out.println("CONFIRM LOGOUT..! PRESS ANY KEY");
+			 int r=scan.nextInt();
+		        if(r==10){
+		        	System.exit(0);
+		        }else {
+		        	System.exit(0);
+		        }
+		}
+		else if(a==3) {
+
+			System.out.println("WELCOME EMPLOYEE");
+			Thread.sleep(2000);
+			u.Accountant();
+			 System.out.println("CONFIRM LOGOUT..! PRESS ANY KEY");
+			 int r=scan.nextInt();
+		        if(r==10){
+		        	System.exit(0);
+		        }else {
+		        	System.exit(0);
+		        }
+		}
+		else {
+			System.out.println("INVALID DATA\n PRESS 0 TO RE-ENTER THE DATA OR PRESS PRESS ANY KEY TO LOGOUT");
+			 int r=scan.nextInt();
+		        if(r==0){
+		        	 System.exit(0);
+		        }else {
+		        	System.exit(0);
+		        }
+			
+		}
+	}
+}
+package FSS_PMS;
+
+import java.io.IOException;
+import java.util.Scanner;
+
+public class User_Actions {
+	
+	public static void AddEmployee() throws InterruptedException, IOException {
+		System.out.println("CHOOSE YOUR ACTION\n 1.CREATE NEW EMPLOYEES\n 2.ADD EXTRA EMPLOYEE TO EXISTING TABLE");
+		Scanner scan=new Scanner(System.in);
+		int a=scan.nextInt();
+		if(a==1) {
+			
+			System.out.println("YOU HAVE TO CREATE TABLE \n PLEASE WAIT CONNECTING TO DATABASE...");
+			Thread.sleep(2000);
+			CreateTables f=new CreateTables();
+			f.Raja();
+	       
+	        System.out.println("PRESS ANY TO LOGOUT");
+	        int r=scan.nextInt();
+	        if(r==10){
+	        	System.exit(0);
+	        }else {
+	        	System.exit(0);
+	        }
+		}
+		else if(a==2) {
+			
+			System.out.println("PLEASE WAIT CONNECTING TO DATABASE...");
+			Thread.sleep(2000);
+			
+			//DataBase db=new DataBase();
+			//db.existTable();
+		}
+		else {
+			System.out.println("INVALID DATA");
+		}
+	}
+	public static void UpdateEmployee() throws InterruptedException {
+		System.out.println("YOU ARE ENTERED INTO UPDATING EMPLOYEE DETAILS");
+		Thread.sleep(2000);
+		User_Actions.SearchEmployee();
+		Update u=new Update();
+		
+	}
+	public static void SearchEmployee() throws InterruptedException {
+		System.out.println("YOU ARE ENTERED INTO SEARCH EMPLOYEE");
+		Thread.sleep(2000);
+		Searching s=new Searching();
+		s.Search();
+	}
+	public static void DeleteEmployee() {
+		DeleteEmp d=new DeleteEmp();
+		d.Joye();
+		System.exit(0);
+	}
+	public static void GeneratePaySlip() {
+		
+	}
+	public static void RecordEmployee() {
+		
+	}
+ 
+}
+package FSS_PMS;
+
+import java.io.IOException;
+import java.util.Scanner;
+
+public class User_Login {
+	
+	public static void Admin() throws InterruptedException, IOException {
+		Scanner scan=new Scanner(System.in);
+		System.out.println("ENTER YOUR USERID");
+		String a=scan.nextLine();
+		System.out.println("ENTER YOUR PASSWORD");
+		int c=scan.nextInt();
+		if(a.equalsIgnoreCase("SHAIK123") && c==1234) {
+			Thread.sleep(2000);
+			System.out.println("WELCOME "+a+" \n CHOOSE YOUR ACTION \n 1.ADD EMPLOYEE \n 2.UPDATE EMPLOYEE \n 3.SEARCH EMPLOYEE \n 4.DELETE EMPLOYEE \n 5.GENERATE PAY SLIP \n 6.RECORD EMLOYEE ATTENDENCE AND WORKING HOURS");
+			int b=scan.nextInt();
+			switch (b) {
+			case (1):
+			 User_Actions.AddEmployee();
+			case (2):
+				User_Actions.UpdateEmployee();
+			case (3):
+				User_Actions.SearchEmployee();
+			case (4):
+				User_Actions.DeleteEmployee();
+			case (5):
+				User_Actions.GeneratePaySlip();
+			case (6):
+				User_Actions.RecordEmployee();
+			default:
+				System.out.println("INVALID DATA");
+			}
+		}
+			else {
+				System.out.println("INVALID DATA");
+			}
+		}
+	public static void Employee() throws InterruptedException {
+		Scanner scan=new Scanner(System.in);
+		Thread.sleep(2000);
+		System.out.println("ENTER YOUR USERID");
+		String a=scan.nextLine();
+		System.out.println("ENTER YOUR PASSWORD");
+		 int c=scan.nextInt();
+		 if(a.equalsIgnoreCase("E100") && c==1000) {
+			 Thread.sleep(2000);
+			 System.out.println("WELCOME "+a+" \n CHOOSE YOUR ACTION \n 1.VIEW EMPLOYEE \n 2.UPDATE EMPLOYEE \n 3.VIEW PAY SLIP");
+				int b=scan.nextInt();
+				switch (b) {
+				case (1):
+				// User_Actions.ViewEmployee();
+				case (2):
+					User_Actions.UpdateEmployee();
+				case (3):
+					//User_Actions.ViewPayslip();
+				default:
+					System.out.println("INVALID DATA");
+				}
+		 }
+		 else {
+			 System.out.println("INVALID DATA");
+		 }
+	}
+	public static void Accountant() throws InterruptedException {
+		Thread.sleep(2000);
+		Scanner scan=new Scanner(System.in);
+		System.out.println("ENTER YOUR USERID");
+		String a=scan.nextLine();
+		System.out.println("ENTER YOUR PASSWORD");
+		 int c=scan.nextInt();
+		 if(a.equalsIgnoreCase("A100") && c==2000) {
+			 System.out.println("WELCOME "+a+" \n CHOOSE YOUR ACTION \n 1.VIEW EMPLOYEE \n 2.SALARY CALCULATION \n 3.RECORD EMPLOYEE AND WORKING HOURS");
+				int b=scan.nextInt();
+			switch (b) {
+				case (1):
+			//	 User_Actions.ViewEmployee();
+				case (2):
+				//	User_Actions.SalaryCalculation();
+				case (3):
+					User_Actions.RecordEmployee();
+				default:
+					System.out.println("INVALID DATA");
+				}
+		 }
+	}
+	}
+
