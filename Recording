@@ -1,0 +1,69 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+public class Recording {
+
+	void viewAttendece() {
+		// TODO Auto-generated method stub
+
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			float emp_wd, emp_wh;
+			int emp_ID = 0;
+			System.out.println("Enter Employee Id :");
+			emp_ID = Integer.parseInt(br.readLine());
+
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/s", "root", "6304226160");
+
+			PreparedStatement stmt = con.prepareStatement("select * from s.empattendence where emp_ID=" + emp_ID + "");
+
+			ResultSet rs = stmt.executeQuery();
+
+			System.out.println("Emp Id     Emp_Working Hours   Emp_Working Days");
+			while (rs.next())
+
+				System.out.println(
+						rs.getInt(1) + "          " + rs.getFloat(2) + "               " + rs.getFloat(3) + "");
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
+	void StoreEmpAtt() {
+		// TODO Auto-generated method stub
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			float emp_wd, emp_wh;
+			int emp_id = 0;
+			System.out.println("Enter Employee Id :");
+			emp_id = Integer.parseInt(br.readLine());
+			System.out.println("Enter no of Hours Employee Worked :");
+			emp_wh = Float.parseFloat(br.readLine());
+			System.out.println("Enter no of Days Employee Worked:");
+			emp_wd = Float.parseFloat(br.readLine());
+
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pms", "root", "s");
+
+			PreparedStatement stmt = con.prepareStatement("insert into empattendence values(?,?,?)");
+
+			stmt.setInt(1, emp_id);
+			stmt.setFloat(2, emp_wh);
+			stmt.setFloat(3, emp_wd);
+
+			int i = stmt.executeUpdate();
+
+			System.out.println("Employee Attendance Recorded Successfully......");
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
+}
