@@ -1,0 +1,46 @@
+public class SearchByName extends Searching {
+	   static final String DB_URL = "jdbc:mysql://localhost:3306/S";
+	   static final String USER = "root";
+	   static final String PASS = "6304226160";
+	  
+
+	   public static void Rams() {
+		      // Open a connection
+		      try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+		         Statement stmt = conn.createStatement();) {		      
+		         System.out.println("FETCHING RECORDS FROM YOUR DATABASE....");
+		        // ResultSet rs = stmt.executeQuery(QUERY);
+		          System.out.println("ENTER EMPLOYEE ID");
+		         Scanner scan=new Scanner(System.in);
+		         int a=scan.nextInt();
+		         System.out.println("ENTER TABLE NAME");
+		         String c=scan.next();
+		         String sql = "SELECT * FROM "+c+" WHERE Id ="+a+" ;";
+		         ResultSet rs=stmt.executeQuery(sql);
+		         rs = stmt.executeQuery(sql);
+    	  while(rs.next()){
+              //Display values
+          	 String Id = rs.getString("Id");
+   	        String First = rs.getString("First");
+   	        String Last = rs.getString("Last");
+   	        String Gender = rs.getString("Gender");
+   	        String Age = rs.getString("Age");
+   	        String Salary = rs.getString("Salary");
+   	        String Designation = rs.getString("Designation");
+   	        String DepartmentNo = rs.getString("DepartmentNo");
+   	        String Contact_Number = rs.getString("Contact_Number");
+   	        String Email = rs.getString("Email");
+   	        
+   	        // print the results
+   	      //  System.out.format("%s, %s, %s, %s\n", Id, First, Last, Gender);
+   	     System.out.println("  "+First+"  "+Last+"  "+Gender+" "+Age+"  "+Salary+"  "+Designation+"  "+DepartmentNo+"  "+Contact_Number+"  "+Email);
+               
+           }
+                
+	}
+       catch (SQLException e) {
+         e.printStackTrace();
+      } }
+   
+}
+  
