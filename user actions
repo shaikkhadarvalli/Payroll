@@ -1,0 +1,96 @@
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+ 
+
+public class User_Actions extends User_Login {
+	//ADD-EMPLOYEE METHOD
+	@SuppressWarnings("static-access")
+	public static void AddEmployee() throws InterruptedException, IOException, ClassNotFoundException {
+		System.out.println("CHOOSE YOUR ACTION\n 1.CREATE NEW EMPLOYEES\n 2.ADD EXTRA EMPLOYEE TO EXISTING TABLE");
+		Scanner scan = new Scanner(System.in);
+		int a = scan.nextInt();
+		if (a == 1) {
+
+			System.out.println("YOU HAVE TO CREATE TABLE \n PLEASE WAIT CONNECTING TO DATABASE...");
+			Thread.sleep(2000);
+			CreateTables f = new CreateTables();
+			f.Raja();
+
+			System.out.println("PRESS ANY TO LOGOUT");
+			int r = scan.nextInt();
+			scan.close();
+			if (r == 10) {
+				User_Login.Logout();
+			} else {
+				User_Login.Logout();
+			}
+		} else if (a == 2) {
+
+			System.out.println("PLEASE WAIT WHILE CONNECTING TO DATABASE...");
+			Thread.sleep(2000);
+			User_Actions.AddEmployee();
+
+		} else {
+			System.out.println("INVALID DATA");
+		}
+		scan.close();
+	}
+	//UPDATE EMPLOYEE METHOD
+	public static void UpdateEmployee() throws InterruptedException, IOException, ClassNotFoundException, NumberFormatException, SQLException {
+		System.out.println("YOU ARE ENTERED INTO UPDATING EMPLOYEE DETAILS");
+		Thread.sleep(2000);
+		User_Actions.SearchEmployee();
+		Update u = new Update();
+		u.Run();
+		System.out.println("YOU ARE TRANSFERED TO MAIN MENU");
+		TypesOfUsers.main(null);
+
+	}
+	//SEARCH EMPLOYEE METHOD
+	@SuppressWarnings("static-access")
+	public static void SearchEmployee() throws InterruptedException, IOException, ClassNotFoundException, NumberFormatException, SQLException {
+		System.out.println("YOU ARE ENTERED INTO SEARCH EMPLOYEE");
+		Thread.sleep(2000);
+		Searching s = new Searching();
+		s.Run();
+		System.out.println("YOU ARE TRANSFERED TO MAIN MENU");
+		TypesOfUsers.main(null);
+	}
+	//DELETE EMPLOYEE METHOD
+	public static void DeleteEmployee() throws InterruptedException, IOException, ClassNotFoundException, NumberFormatException, SQLException {
+		DeleteEmp d = new DeleteEmp();
+		d.Joye();
+		System.out.println("YOU ARE TRANSFERED TO MAIN MENU");
+		 TypesOfUsers.main(null);
+	}
+	//GENERATE PAY SLIP METHOD
+	public static void GeneratePaySlip() {
+
+	}
+	public static void ViewProfile() throws ClassNotFoundException, InterruptedException, IOException {
+		ViewProfile.koksal();
+	}
+	//RECORD EMPLOYEE METHOD
+	public static void RecordEmployee() throws ClassNotFoundException, InterruptedException, IOException, NumberFormatException, SQLException {
+		Recording r=new Recording();
+		System.out.println("1.STORE DATA\n2.VIEW DATA");
+		Scanner scan = new Scanner(System.in);
+		int g=scan.nextInt();
+		if(g==1) {
+		r.StoreEmpAtt();
+		}else if(g==2) {
+			r.viewAttendece();
+		}else {
+			Actions.friend();
+		}
+		
+	}
+	 
+	public static void Viewpayslip() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}
