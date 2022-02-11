@@ -1,0 +1,153 @@
+class Update extends User_Actions {
+	static final String DB_URL = "jdbc:mysql://localhost:3306/S";
+	static final String USER = "root";
+	static final String PASS = "6304226160";
+	 
+
+	public static void Sun() throws ClassNotFoundException, InterruptedException, IOException {
+
+		// Open a connection
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+				Statement stmt = conn.createStatement();) {
+			Scanner scan = new Scanner(System.in);
+			System.out.println("1.I AM CONFIRMING THAT I WANT TO DO UPDATE\n2.SORRY I PREESSED UPDATE INSTEAD OF PRESS ANOTHER KEY. I WANT TO SEE ALL ACTIONS EXCEPT UPDATE");
+		
+			int e= scan.nextInt();
+			if(e==1) {
+				System.out.println("ENTER THE EMPLOYEE ID");
+				int f = scan.nextInt();
+			
+				System.out.println("WHICH ONE YOU HAVE TO UPDATE");
+				System.out.println(
+						"1.First Name\n2.Last Name\n3.Gender\n4.Age\n5.Salary\n6.Departmentno\n7.Contact_Number\n8.Email");
+				int b = scan.nextInt();
+				 
+			 
+
+		if(b==1) {
+					System.out.println("ENTER THE UPDATED FIRST NAME");
+					String x = scan.next();
+					System.out.println("ENTER TABLE NAME");
+					String w=scan.next();
+					String sql = "UPDATE s."+w+" SET First ='"+x+"'  WHERE Id="+f+";";
+					System.out.println(sql);
+					   stmt.executeUpdate(sql);
+				    
+				}
+		else if(b==2)
+
+					{System.out.println("ENTER THE UPDATED LAST NAME");
+					String g = scan.next();
+					System.out.println("ENTER TABLE NAME");
+					String x = scan.next();
+					String swl = "UPDATE " +x+ " SET Last ='" + g + "'  WHERE Id= " + f + " ;";
+					stmt.executeUpdate(swl);
+					 
+					}
+		else if(b==3) {
+
+					System.out.println("ENTER UPDATED GENDER TYPE");
+					String s = scan.next();
+					System.out.println("ENTER TABLE NAME");
+					String x = scan.next();
+					
+					String sel = "UPDATE S."+x+ " SET Gender ='"+s+"'  WHERE Id="+f+" ;" ;
+					System.out.println(sel);
+					
+					 
+			        stmt.executeQuery(sel);
+					 }
+		else if(b==4) {
+					System.out.println("ENTER UPDATED AGE");
+					int r = scan.nextInt();
+					System.out.println("ENTER TABLE NAME");
+					String x = scan.next();
+					String srl = "UPDATE " +x+ " SET Age ='" + r + "'  WHERE id= " + f + " ;";
+					stmt.executeUpdate(srl);
+					 }
+		else if(b==5) {
+					System.out.println("ENETR UPDATED SALARY");
+					int t = scan.nextInt();
+					System.out.println("ENTER TABLE NAME");
+					String x = scan.next();
+					String slr = "UPDATE " + x+ " SET Salary ='" + t + "'  WHERE id= " + f + " ;";
+					stmt.executeUpdate(slr);
+					 }
+		else if(b==7) {
+					System.out.println("ENTER UPDATED DEPARTMENT NO");
+					int y = scan.nextInt();
+					System.out.println("ENTER TABLE NAME");
+					String x = scan.next();
+					String stl = "UPDATE " +x+ " SET Salary ='" + y + "'  WHERE id= " + f + " ;";
+					stmt.executeUpdate(stl);
+					 }
+		else {
+					System.out.println("YOU ENTERED INVALID DATA PRESS");
+					System.out.println("1.RE-ENTER\n2.QUIT");
+					int v=scan.nextInt();
+					if(v==1) {
+						//Update.Sun();
+					}
+					else {
+						System.exit(0);
+					}
+				}
+		System.out.println("YOU HAD COMPLETED YOUR UPDATION\n YOUR REMAINING ACTIONS HERE");
+		System.out.println(" CHOOSE YOUR ACTION \n 1.ADD EMPLOYEE  \n 2.SEARCH EMPLOYEE \n 3.DELETE EMPLOYEE \n 4.GENERATE PAY SLIP \n 5.RECORD EMLOYEE ATTENDENCE AND WORKING HOURS\n6.LOGOUT");
+		int g=scan.nextInt();
+		switch (g) {
+		case (1):
+		 User_Actions.AddEmployee();
+		case (2):
+			User_Actions.SearchEmployee();
+		case (3):
+			User_Actions.DeleteEmployee();
+		case (4):
+			User_Actions.GeneratePaySlip();
+		 
+		case (5):
+			User_Actions.RecordEmployee();
+		case (6):
+			User_Login.Logout();
+		default:
+			System.out.println("I'M SURE I CHOOSEN INVALID DATA AND I WANT TO RE LOGIN");
+					 User_Login.Admin();
+		}
+			}
+			
+			
+	else if(e==2) {
+				System.out.println("SURE.,NOW YOU CAN SEE THE ACTIONS WITHOUT UPDATON");
+				
+				System.out.println("CHOOSE YOUR ACTION \n 1.ADD EMPLOYEE  \n 2.SEARCH EMPLOYEE \n 3.DELETE EMPLOYEE \n 4.GENERATE PAY SLIP \n 5.RECORD EMLOYEE ATTENDENCE AND WORKING HOURS\n6.LOGOUT");
+				
+				Scanner sc=new Scanner(System.in);
+				int L=sc.nextInt();
+				switch (L) {
+				case (1):
+				 User_Actions.AddEmployee();
+				case (2):
+					User_Actions.SearchEmployee();
+				case (3):
+					User_Actions.DeleteEmployee();
+				case (4):
+					User_Actions.GeneratePaySlip();
+				 
+				case (5):
+					User_Actions.RecordEmployee();
+				case (6):
+					User_Login.Logout();
+				default:
+					System.out.println("I'M SURE I CHOOSEN INVALID DATA AND I WANT TO RE LOGIN");
+							 User_Login.Admin();
+				}
+		}
+			else{
+				User_Actions.Logout();
+				}} catch (SQLException e) {
+					e.printStackTrace();
+			}
+
+			
+		}
+	}
