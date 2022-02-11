@@ -1,0 +1,58 @@
+class DeleteEmp {
+
+	public static void Joye() throws NumberFormatException, IOException, SQLException, InterruptedException {
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		Connection con = null;
+		Statement st = null;
+		ResultSet rs = null;
+		System.out.println("Enter the employee id");
+		int emp_id = Integer.parseInt(br.readLine());
+		String qry = "delete from "+AddEmpl.ConTableName()+" where id=" + emp_id + "";
+		String url = "jdbc:mysql://localhost:3306/s";
+		String uname = "root";
+		String password = "6304226160";
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			//searching for driver
+			con = (Connection) DriverManager.getConnection(url, uname, password);
+			st = con.createStatement();
+			rs = ((java.sql.Statement) st).executeQuery("select * from "+AddEmpl.ConTableName());
+			while (rs.next()) {
+				String EmployeeDetails = "";
+				for (int i = 1; i <= 7; i++) {
+					EmployeeDetails += rs.getString(i) + "    ";
+				}
+				System.out.println(EmployeeDetails);
+			}
+			System.out.println("Are you sure deleted the record enter yes/no");
+			String d = br.readLine();
+
+			if (d.contentEquals("yes")) {
+				st.executeUpdate(qry);
+				System.out.println("data deleted succesfully");
+				Actions.friend();
+			} else
+				System.out.println("your date will not be deleted");
+			Actions.friend();
+
+		} catch (ClassNotFoundException | SQLException e) {
+
+			e.printStackTrace();
+		} finally {
+			if (st != null) {
+				try {
+					st.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (con != null) {
+				con.close();
+			}
+		}
+
+	}
+
+}
